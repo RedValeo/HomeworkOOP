@@ -79,15 +79,86 @@ class Reviewer(Mentor):
         result = f'Имя: {self.name}\nФамилия: {self.surname}'
         return result
  
-best_student = Student('Ruoy', 'Eman', 'your_gender')
-best_student.courses_in_progress += ['Python']
- 
-cool_mentor = Mentor('Some', 'Buddy')
-cool_mentor.courses_attached += ['Python']
- 
-cool_mentor.rate_hw(best_student, 'Python', 10)
-cool_mentor.rate_hw(best_student, 'Python', 10)
-cool_mentor.rate_hw(best_student, 'Python', 10)
- 
-print(best_student.grades)
+best_lecturer_1 = Lecturer('Евгений', 'Маргулис')
+best_lecturer_1.courses_attached += ['Python']
+
+best_lecturer_2 = Lecturer('Алексей', 'Горшенев')
+best_lecturer_2.courses_attached += ['Java']
+
+cool_reviewer_1 = Reviewer('Эдмунд', 'Шклярский')
+cool_reviewer_1.courses_attached += ['Python']
+cool_reviewer_1.courses_attached += ['Java']
+
+cool_reviewer_2 = Reviewer('Вадим', 'Самойлов')
+cool_reviewer_2.courses_attached += ['Python']
+cool_reviewer_2.courses_attached += ['Java']
+
+student_1 = Student('Игги', 'Поп', "M")
+student_1.courses_in_progress += ['Python']
+student_1.finished_courses += ['Введение в программирование']
+
+student_2 = Student('Андрей', 'Князев', 'M')
+student_2.courses_in_progress += ['Java']
+student_2.finished_courses += ['Введение в программирование']
+
+student_1.rate_hw(best_lecturer_1, 'Python', 7)
+student_1.rate_hw(best_lecturer_1, 'Python', 7)
+student_1.rate_hw(best_lecturer_1, 'Python', 9)
+
+student_1.rate_hw(best_lecturer_2, 'Python', 5)
+student_1.rate_hw(best_lecturer_2, 'Python', 7)
+student_1.rate_hw(best_lecturer_2, 'Python', 8)
+
+student_1.rate_hw(best_lecturer_1, 'Python', 7)
+student_1.rate_hw(best_lecturer_1, 'Python', 8)
+student_1.rate_hw(best_lecturer_1, 'Python', 9)
+
+student_2.rate_hw(best_lecturer_2, 'Java', 10)
+student_2.rate_hw(best_lecturer_2, 'Java', 8)
+student_2.rate_hw(best_lecturer_2, 'Java', 9)
+
+cool_reviewer_1.rate_hw(student_1, 'Python', 8)
+cool_reviewer_1.rate_hw(student_1, 'Python', 9)
+cool_reviewer_1.rate_hw(student_1, 'Python', 10)
+
+cool_reviewer_2.rate_hw(student_2, 'Java', 8)
+cool_reviewer_2.rate_hw(student_2, 'Java', 7)
+cool_reviewer_2.rate_hw(student_2, 'Java', 9)
+
+print(f'Перечень студентов:\n\n{student_1}\n\n{student_2}')
+
+print(f'Перечень лекторов:\n\n{best_lecturer_1}\n\n{best_lecturer_2}')
+
+print(f'Результат сравнения студентов (по средним оценкам за ДЗ): '
+      f'{student_1.name} {student_1.surname} < {student_2.name} {student_2.surname} = {student_1 > student_2}')
+
+print(f'Результат сравнения лекторов (по средним оценкам за лекции): '
+      f'{best_lecturer_1.name} {best_lecturer_1.surname} < {best_lecturer_2.name} {best_lecturer_2.surname} = {best_lecturer_1 > best_lecturer_2}')
+
+student_list = [student_1, student_2]
+lecturer_list = [best_lecturer_1, best_lecturer_2]
+
+def student_rating(student_list, course_name):
+    sum_all = 0
+    count_all=0
+    for stud in student_list:
+        if course_name in stud.courses_in_progress:
+            sum_all += sum(stud.grades.get(course_name, []))
+            count_all = len(stud.grades.get(course_name, []))
+    average_for_all = sum_all / count_all
+    return average_for_all
+
+def lecturer_rating(lecturer_list, course_name):
+    sum_all = 0
+    count_all = 0
+    for lect in lecturer_list:
+        if course_name in lect.courses_attached:
+            sum_all += sum(lect.grades.get(course_name, []))
+            count_all = len(lect.grades.get(course_name, []))
+    average_for_all = sum_all / count_all
+    return average_for_all
+
+print(f"Средняя оценка для всех студентов по курсу {'Python'}: {student_rating(student_list, 'Python')}")
+print(f"Средняя оценка для всех лекторов по курсу {'Python'}: {lecturer_rating(lecturer_list, 'Python').__round__(2)}")
     
+
